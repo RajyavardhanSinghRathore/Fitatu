@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Calorie Tracker – Immersive Story</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <!-- Hero / Intro -->
+      <section id="hero" class="section hero">
+        <header class="top-nav">
+          <div class="logo-lockup logo-lockup--brand">
+            <span class="logo-text logo-text--brand">Fitatu</span>
+          </div>
+        </header>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1 class="hero-title">
+              Tired of tedious food logging?
+            </h1>
+            <p class="hero-subtitle">
+              A simpler, smarter way to track your nutrition using AI and simple inputs.
+            </p>
+            <div class="hero-cta-row">
+              <button class="pill-button pill-button--primary" onclick="document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });">Let&rsquo;s Get Started</button>
+            </div>
+          </div>
+
+          <div class="hero-orbit">
+            <div class="food-orbit">
+              <img
+                src="assets/images/Taco.png"
+                alt="Floating cosmic taco"
+                class="hero-food-image"
+                style="filter: drop-shadow(0px 30px 40px rgba(0, 0, 0, 0.4));"
+              />
+            </div>
+            <div class="macro-bubbles">
+              <div class="macro-bubble macro-bubble--carbs">
+                <span class="macro-label">Carbs</span>
+                <span class="macro-value">42 g</span>
+              </div>
+              <div class="macro-bubble macro-bubble--protein">
+                <span class="macro-label">Protein</span>
+                <span class="macro-value">21 g</span>
+              </div>
+              <div class="macro-bubble macro-bubble--fat">
+                <span class="macro-label">Fat</span>
+                <span class="macro-value">18 g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-indicator">
+          <span class="scroll-label">Scroll to Decode Your Meal</span>
+          <span class="scroll-line"></span>
+        </div>
+      </section>
+
+      <!-- Section 1: AI Magic -->
+      <section id="ai-magic" class="section ai-magic">
+        <div class="section-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <h2 class="section-title">Liquid Calories Count</h2>
+              <p class="section-body">
+                Log your drinks, shakes, and daily hydration instantly without the guesswork.
+              </p>
+              <div class="liquid-fact">
+                <h3>Success is just 5 minutes a day away.</h3>
+                <p>
+                  A recent study found that people who consistently track their food intake lose nearly
+                  <strong>twice as much weight</strong> as those who don't. Consistent trackers succeed
+                  because they become aware of their habits. Just 5 minutes of total daily logging can
+                  lead to a 75% higher chance of reaching your health goals!
+                </p>
+              </div>
+            </div>
+
+            <div class="hero-orbit">
+              <div class="food-orbit">
+                <img
+                  src="assets/images/Coke.png"
+                  alt="Floating drink"
+                  class="hero-food-image"
+                  style="filter: drop-shadow(0px 30px 40px rgba(0, 0, 0, 0.4));"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard + Daily Log -->
+      <section id="dashboard" class="section dashboard">
+        <div class="dashboard-inner">
+          <div class="dashboard-grid">
+            <article class="glass-card tracker-card" aria-label="Calories and Macros">
+              <div class="card-top">
+                <div>
+                  <div class="card-kicker">Daily energy</div>
+                  <div class="card-title">Calories</div>
+                </div>
+                <div class="stat-pill">
+                  <span id="caloriesValue">0</span>
+                  <span class="stat-sep">/</span>
+                  <span id="caloriesGoal">2000</span>
+                  <span class="stat-unit">kcal</span>
+                </div>
+              </div>
+
+              <div class="progress-block">
+                <div class="progress-row">
+                  <span class="progress-label">Progress</span>
+                  <span class="progress-meta"><span id="caloriesPct">0</span>%</span>
+                </div>
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                  <div class="progress-fill" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="macro-grid">
+                <div class="macro-meter">
+                  <div class="macro-top">
+                    <span class="macro-name">Carbs</span>
+                    <span class="macro-meta"><span id="carbsValue">0</span>/<span id="carbsGoal">250</span> g</span>
+                  </div>
+                  <div class="mini-bar">
+                    <div class="mini-fill mini-fill--carbs" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div class="macro-meter">
+                  <div class="macro-top">
+                    <span class="macro-name">Protein</span>
+                    <span class="macro-meta"><span id="proteinValue">0</span>/<span id="proteinGoal">160</span> g</span>
+                  </div>
+                  <div class="mini-bar">
+                    <div class="mini-fill mini-fill--protein" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <div class="macro-meter">
+                  <div class="macro-top">
+                    <span class="macro-name">Fat</span>
+                    <span class="macro-meta"><span id="fatValue">0</span>/<span id="fatGoal">70</span> g</span>
+                  </div>
+                  <div class="mini-bar">
+                    <div class="mini-fill mini-fill--fat" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="glass-card water-card" aria-label="Water tracker">
+              <div class="card-top">
+                <div>
+                  <div class="card-kicker">Hydration</div>
+                  <div class="card-title">Water</div>
+                </div>
+                <div class="stat-pill stat-pill--aqua">
+                  <span id="waterCups">0</span>
+                  <span class="stat-unit">cups</span>
+                </div>
+              </div>
+
+              <div class="water-visual">
+                <div class="water-gauge">
+                  <div class="water-gauge-fill" id="waterGaugeFill"></div>
+                </div>
+                <div class="water-hint">Tap to adjust. We never go below 0.</div>
+              </div>
+
+              <div class="water-actions">
+                <button id="waterPlus" class="dash-button dash-button--primary" type="button">
+                  +1 Cup
+                </button>
+                <button id="waterMinus" class="dash-button dash-button--ghost" type="button">
+                  -1 Cup
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="meals-panel">
+            <div class="meals-header">
+              <span class="meals-title">Today’s Meals</span>
+              <span class="meals-count" id="mealsCount">0 logged</span>
+            </div>
+            <div id="mealsList" class="meals-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom AI Control Bar -->
+      <div id="attachmentPreviews" class="attachment-previews" aria-label="Image attachments"></div>
+
+      <div class="ai-control-bar" role="form" aria-label="AI food input">
+        <button id="attachPhoto" class="icon-button" type="button" aria-label="Attach images">＋</button>
+        <input id="aiInput" type="text" class="ai-input" placeholder="What did you eat?" autocomplete="off" />
+        <div class="ai-actions">
+          <button id="voiceLog" class="icon-button" type="button" aria-label="Voice log">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 14C13.6569 14 15 12.6569 15 11V5C15 3.34315 13.6569 2 12 2C10.3431 2 9 3.34315 9 5V11C9 12.6569 10.3431 14 12 14Z" fill="currentColor"/>
+              <path d="M19 11C19 14.3137 16.3137 17 13 17H11C7.68629 17 5 14.3137 5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 17V19C8 19.5523 8.44772 20 9 20H15C15.5523 20 16 19.5523 16 19V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button id="sendFood" class="icon-button send" type="button" aria-label="Send">➤</button>
+        </div>
+        <input id="imageInput" type="file" accept="image/*" multiple hidden />
+      </div>
+
+      <!-- Goals / Settings -->
+      <section class="section outro">
+        <div class="section-inner">
+          <div class="glass-card goals-card">
+            <h2 class="section-title">Your Goals</h2>
+            <div class="goals-grid">
+              <label class="goal-row">
+                <span class="goal-label">Weight (kg)</span>
+                <input id="goalWeight" type="number" class="goal-input" placeholder="e.g. 70" />
+              </label>
+              <label class="goal-row">
+                <span class="goal-label">Height (cm)</span>
+                <input id="goalHeight" type="number" class="goal-input" placeholder="e.g. 175" />
+              </label>
+              <label class="goal-row">
+                <span class="goal-label">Daily Water Target (cups)</span>
+                <input id="goalWater" type="number" class="goal-input" placeholder="e.g. 8" />
+              </label>
+
+              <label class="goal-row">
+                <span class="goal-label">Target Carbs (g)</span>
+                <input id="goalCarbs" type="number" class="goal-input" placeholder="e.g. 250" />
+              </label>
+              <label class="goal-row">
+                <span class="goal-label">Target Protein (g)</span>
+                <input id="goalProtein" type="number" class="goal-input" placeholder="e.g. 160" />
+              </label>
+              <label class="goal-row">
+                <span class="goal-label">Target Fat (g)</span>
+                <input id="goalFat" type="number" class="goal-input" placeholder="e.g. 70" />
+              </label>
+
+              <label class="goal-row">
+                <span class="goal-label">Daily Calorie Target</span>
+                <input id="goalCalories" type="number" class="goal-input" placeholder="Calculated" readonly />
+              </label>
+            </div>
+            <button id="saveGoals" class="pill-button pill-button--primary" type="button">
+              Save Goals
+            </button>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+
