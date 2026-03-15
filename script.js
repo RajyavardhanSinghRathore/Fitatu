@@ -678,6 +678,55 @@ function initFoodLogger(attachmentBar) {
     attachmentBar?.clear();
   }
 
+  async function sendMealToAI(text) {
+    const url = "http://127.0.0.1:8000/api/log-text";
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ text }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`Server returned ${res.status}: ${body}`);
+    }
+
+    const data = await res.json();
+    const calories = Number(data.calories) || 0;
+    const carbs = Number(data.carbs) || 0;
+    const protein = Number(data.protein) || 0;
+    const fat = Number(data.fat) || 0;
+
+    return { calories, carbs, protein, fat };
+  }
+
+  function createLoadingAnimation() {
+    let timeline = null;
+
+    return {
+      start() {
+        if (!sendBtn) return;
+        timeline = gsap.to(sendBtn, {
+          scale: 1.08,
+          duration: 0.35,
+          ease: "power1.inOut",
+          repeat: -1,
+          yoyo: true,
+        });
+      },
+      stop() {
+        if (timeline) {
+          timeline.kill();
+          timeline = null;
+          gsap.to(sendBtn, { scale: 1, duration: 0.15, ease: "power2.out" });
+        }
+      },
+    };
+  }
+
   async function sendEntry() {
     const text = (inputEl.value || "").trim();
     const attachments = attachmentBar?.getFiles() || [];
@@ -687,31 +736,49 @@ function initFoodLogger(attachmentBar) {
       text ||
       `Photo log${attachments.length > 1 ? ` (${attachments.length})` : ""}`;
 
-    const calories = 180 + attachments.length * 110;
-
     const originalPlaceholder = inputEl.placeholder;
     sendBtn.disabled = true;
     if (voiceBtn) voiceBtn.disabled = true;
 
-    if (attachments.length) {
-      inputEl.placeholder = "Analyzing Cheeseburgers...";
-      await attachmentBar.playScan?.();
+    const loading = createLoadingAnimation();
+    loading.start();
+
+    try {
+      let nutrition = {
+        calories: 180 + attachments.length * 110,
+        carbs: 0,
+        protein: 0,
+        fat: 0,
+      };
+
+      if (text) {
+        nutrition = await sendMealToAI(text);
+      }
+
+      if (attachments.length) {
+        inputEl.placeholder = "Analyzing Cheeseburgers...";
+        await attachmentBar.playScan?.();
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      }
+
+      addMealCard({
+        label,
+        calories: nutrition.calories,
+        carbs: nutrition.carbs,
+        protein: nutrition.protein,
+        fat: nutrition.fat,
+      });
+    } catch (error) {
+      console.error("Failed to log meal:", error);
+      inputEl.placeholder = "Something went wrong. Try again.";
       await new Promise((resolve) => setTimeout(resolve, 1200));
+    } finally {
+      loading.stop();
+      clearInputs();
+      inputEl.placeholder = originalPlaceholder;
+      sendBtn.disabled = false;
+      if (voiceBtn) voiceBtn.disabled = false;
     }
-
-    addMealCard({
-      label,
-      calories,
-      carbs: 0,
-      protein: 0,
-      fat: 0,
-    });
-
-    clearInputs();
-    inputEl.placeholder = originalPlaceholder;
-
-    sendBtn.disabled = false;
-    if (voiceBtn) voiceBtn.disabled = false;
   }
 
   sendBtn.addEventListener("click", sendEntry);
